@@ -54,7 +54,8 @@ class LYURouterOptions: NSObject {
     ///  跳转时传入的参数，默认为空
     var defaultParams:NSDictionary = NSDictionary();
     
-    
+    var fromUrI:String = ""
+    var toUri:String = ""
     
     
 }
@@ -104,8 +105,6 @@ class LYURouterHandle: NSObject {
         }
     }
     
-
-    
     
     /// 对传入的url进行校验
     ///
@@ -151,10 +150,15 @@ class LYURouterHandle: NSObject {
     class func switchTab(vcClassName:String, options:LYURouterOptions){
         
         let rootVC = UIApplication.shared.keyWindow?.rootViewController ;
-        if let rootVC = rootVC{
+        let targetVC = NSClassFromString(vcClassName) as? UIViewController;
+        
+        if let rootVC = rootVC, let targetVC = targetVC {
+            let index = targetVC.tabIndex;
             
-            print(rootVC);
-//            let index = [NSClassFromString(vcClassName) ]
+            if(rootVC is UITabBarController){
+                
+            }
+            
             
             
             
