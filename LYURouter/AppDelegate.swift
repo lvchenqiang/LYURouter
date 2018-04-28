@@ -15,7 +15,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let tabbarVC = UITabBarController()
+        tabbarVC.viewControllers = [UINavigationController(rootViewController: TabbarOneVC()),
+                                    UINavigationController(rootViewController: TabbarTwoVC()),
+                                    UINavigationController(rootViewController: TabbarThreeVC())];
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds);
+//        self.window?.rootViewController = UINavigationController(rootViewController: ViewController());
+        self.window?.rootViewController = tabbarVC;
+        self.window?.makeKeyAndVisible();
+        
+        LYURouter.shareRouter.routeStartAction = {options,url in
+            if(url == "ViewController"){
+                options.defaultParams["name"] = "李四"
+            }
+            return options;
+        }
         return true
     }
 

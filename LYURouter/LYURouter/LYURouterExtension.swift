@@ -17,10 +17,10 @@ import UIKit
 /// - Present///系统Present风格
 /// - Custom///自定义风格
 enum LYURouterTransformStyle {
-    case Normal /// 默认的风格
+    case Normal
     case Push   /// 系统push风格
     case Present /// 系统Present风格
-    case Custom  /// 自定义风格
+    case Other  /// 自定义风格
 }
 
 
@@ -49,15 +49,30 @@ class LYURouterOptions: NSObject {
     var animated:Bool = false;
     
     ///  每个页面所对应的moduleID
-    var moduleID:String = ""
-    
+    var moduleID:String {
+        get {
+            return "";
+        }
+    }
     ///  跳转时传入的参数，默认为空
-    var defaultParams:NSDictionary = NSDictionary();
+    var defaultParams:[String:AnyHashable] = [String:AnyHashable]();
     
-    var fromUrI:String = ""
-    var toUri:String = ""
+    var transformStyle = LYURouterTransformStyle.Push;
+    var createStyle = LYURouterCreateStyle.New;
     
-    
+    /// 跳转模式
+    var fromurlscheme:String = "";
+    var tourlscheme:String = "";
+    /// 创建单独配置的options对象
+    ///
+    /// - Parameter params: 参数传递
+    /// - Returns: options对象
+    class func options(params:[String:AnyHashable] = [String:AnyHashable]() ) -> LYURouterOptions{
+        let option = self.init()
+        option.defaultParams = params;
+        return option;
+    }
+   
 }
 
 
@@ -93,7 +108,7 @@ class LYURouterHandle: NSObject {
     static var LYURouterModuleIDKey:String
     {
         get{
-            return "LYUModuleID"
+            return "LYUModuleIDKey"
         }
     }
     
@@ -101,7 +116,7 @@ class LYURouterHandle: NSObject {
     ///  在url参数后设置 LYURouterHttpOpenStyleKey=1 时通过appweb容器打开网页，其余情况通过safari打开网页
     static var LYURouterHttpOpenStyleKey:String{
         get{
-         return "LYURouterAppOpen";
+         return "LYURouterAppOpenKey";
         }
     }
     
@@ -150,21 +165,101 @@ class LYURouterHandle: NSObject {
     class func switchTab(vcClassName:String, options:LYURouterOptions){
         
         let rootVC = UIApplication.shared.keyWindow?.rootViewController ;
-        let targetVC = NSClassFromString(vcClassName) as? UIViewController;
+        if(vcClassName.currentClass == nil){
+            return;
+        }
+       
+        let targetType = vcClassName.currentClass! as! UIViewController.Type
         
-        if let rootVC = rootVC, let targetVC = targetVC {
-            let index = targetVC.tabIndex;
-            
+        if let rootVC = rootVC {
+            let index = targetType.routerTabIndex();
             if(rootVC is UITabBarController){
-                
+                let tabBarVC = rootVC as! UITabBarController;
+                 /// 路由开始加载
+                var options = options;
+               options = LYURouterHandle.routerStartAction(vc: tabBarVC.viewControllers![index], options: options);
+                if(tabBarVC.selectedViewController is UINavigationController){
+                    let nvc = tabBarVC.viewControllers![index] as! UINavigationController;
+                    nvc.popToRootViewController(animated: false);
+                    tabBarVC.selectedIndex = index;
+                    
+                }else{
+                    tabBarVC.selectedIndex = index;
+                } 
             }
-            
-            
-            
             
         }
     }
     
     
+    ///  解析JSON文件 获取到所有的Modules
+    ///
+    /// - Parameter file: 文件名
+    class func getModulesFromJsonFile(files:[String]) -> [String]{
+      
+        
+        return [""];
+    }
     
+    
+        // MARK:路由开始
+     class func routerStartAction(vc:UIViewController,options:LYURouterOptions) -> LYURouterOptions{
+        var options = options;
+        if(LYURouter.shareRouter.routeStartAction != nil){
+            options =  LYURouter.shareRouter.routeStartAction!(options,NSStringFromClass(type(of: vc)));
+        }
+        
+        if(vc is LYURouterDelegate && vc.responds(to: #selector(LYURouterDelegate.routerToStart(_:)))){
+            vc.perform(#selector(LYURouterDelegate.routerToStart(_:)), with: options);
+        }
+        return options;
+    }
+    
+    // MARK:路由结束
+     class func routerFinishAction(vc:UIViewController,options:LYURouterOptions){
+        /// 触发代理的操作
+        if(vc is LYURouterDelegate && vc.responds(to: #selector(LYURouterDelegate.routerToFinish(_:)))){
+            vc.perform(#selector(LYURouterDelegate.routerToFinish(_:)), with: options);
+        }
+        
+    }
+    
+}
+
+
+extension String{
+    
+    var currentClass:AnyClass? {
+        get{
+            
+            if  let appName: String = Bundle.main.infoDictionary!["CFBundleName"] as? String{
+                return NSClassFromString("\(appName).\(self)")
+            }
+            return nil;
+        }
+  }
+    
+
+    func convertToClass<T>(_ type:T.Type) -> T.Type?{
+        
+        if  let appName: String = Bundle.main.infoDictionary!["CFBundleName"] as? String{
+    
+            if let appClass = NSClassFromString("\(appName).\(self)") {
+                return appClass as? T.Type;
+            }
+            return nil;
+    
+        }
+        return nil;
+        
+    }
+    
+}
+
+
+extension Array
+{
+    func setarr(){
+        
+    }
 }

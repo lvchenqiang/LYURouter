@@ -9,15 +9,22 @@
 import Foundation
 import UIKit
 
- protocol LYURouterDelegate:NSObjectProtocol {
+ @objc protocol LYURouterDelegate:NSObjectProtocol {
     
-    /// 每个VC 所属的moduleID
-    var moduleID:String {get}
-  
- 
+    @objc optional  func routerToStart(_ options: LYURouterOptions);
+    @objc optional  func routerToFinish(_ options: LYURouterOptions);
+    
 }
 
 
+extension LYURouterDelegate where Self:UIViewController
+{
+    func routerToFinish(_ options: LYURouterOptions)
+    {
+        debugPrint("2222222-----routerToFinish");
+    }
+    
+}
 
 
 
@@ -28,11 +35,6 @@ extension UIViewController
     
     private struct AssociatedKeys{
         static var kRouterTransformStyleKey = "kRouterTransformStyleKey"
-        static var KRouterViewControllerKey = "KRouterViewControllerKey"
-        static var KCheckAccessOpenKey = "KCheckAccessOpenKey"
-        static var KRouterSpecialTransformKey = "KRouterSpecialTransformKey"
-        static var KBelongToTabbarKey = "KBelongToTabbarKey"
-        static var kTabIndexKey = "kTabIndexKey"
     }
     
     // MARK:路由的前进风格
@@ -45,56 +47,44 @@ extension UIViewController
         }
     }
     
-    // MARK:取出对应的导航栏 处理转场动画
-    var routerSpecialTransformNavigation:UINavigationController?
-    {
-        get{
-            return self.navigationController;
-        }
-    }
-    // MARK:路由初始化方法
-    var routerInstanceViewController:UIViewController {
-        get{
-            return objc_getAssociatedObject(self, &AssociatedKeys.KRouterViewControllerKey) as? UIViewController ?? self;
-        }
-        set{
-            objc_setAssociatedObject(self, &AssociatedKeys.KRouterViewControllerKey, newValue, .OBJC_ASSOCIATION_RETAIN);
-        }
-    }
 
-    
-   // MARK:校验是否有权限打开
-    var checkAccessOpen:Bool {
-        get{
-            return objc_getAssociatedObject(self, &AssociatedKeys.KCheckAccessOpenKey) as? Bool ?? true;
-        }
-        set{
-          objc_setAssociatedObject(self, &AssociatedKeys.KCheckAccessOpenKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
-        }
+  
+// MARK:Methods
+    // MARK:路由初始化方法
+   @objc class func routerInstanceViewController() -> UIViewController
+    {
+        return self.init();
     }
     
+    // MARK:校验是否有权限打开此应用
+   @objc  class func routerCheckAccessOpen(options:LYURouterOptions) -> Bool
+    {
+        return true;
+    }
+    
+    @objc class func routerHandleNoAccessToOpen(options:LYURouterOptions){
+        debugPrint("没有权限打开此UI");
+    }
     // MARK:是否属于tabbar
-    var belongToTabbar:Bool{
-        get{
-            return objc_getAssociatedObject(self, &AssociatedKeys.KBelongToTabbarKey) as? Bool ?? false;
-        }
-        set{
-            objc_setAssociatedObject(self, &AssociatedKeys.KBelongToTabbarKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
-        }
+   @objc class func routerBelongToTabbar() -> Bool {
+        
+        return false;
     }
     
     // MARK:tabbar对应的索引
-    var tabIndex:NSInteger {
-        get{
-            return objc_getAssociatedObject(self, &AssociatedKeys.kTabIndexKey) as? NSInteger ?? -1;
-        }
-        set{
-          objc_setAssociatedObject(self, &AssociatedKeys.KCheckAccessOpenKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
-        }
+   @objc  class func routerTabIndex() -> NSInteger {
+        return -1;
     }
     
+    // MARK:取出对应的导航栏 处理转场动画
+   @objc func routerTransformNavigation(nvc:UINavigationController){
+        
+    }
     
+    // MARK:路由刷新
+  @objc func routerReferesh(options:LYURouterOptions){
+        
+    }
     
-   
 }
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8513DD86209443F800C58C1F /* RouterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD85209443F800C58C1F /* RouterViewController.swift */; };
+		8513DD8920945A8600C58C1F /* TabbarOneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD8820945A8600C58C1F /* TabbarOneVC.swift */; };
+		8513DD8B20945AA400C58C1F /* TabbarTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD8A20945AA400C58C1F /* TabbarTwoVC.swift */; };
+		8513DD8D20945AB400C58C1F /* TabbarThreeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD8C20945AB400C58C1F /* TabbarThreeVC.swift */; };
 		8514C50A20900EEB00FA7469 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8514C50920900EEB00FA7469 /* AppDelegate.swift */; };
 		8514C50C20900EEB00FA7469 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8514C50B20900EEB00FA7469 /* ViewController.swift */; };
 		8514C50F20900EEB00FA7469 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8514C50D20900EEB00FA7469 /* Main.storyboard */; };
@@ -18,6 +22,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8513DD85209443F800C58C1F /* RouterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViewController.swift; sourceTree = "<group>"; };
+		8513DD8820945A8600C58C1F /* TabbarOneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarOneVC.swift; sourceTree = "<group>"; };
+		8513DD8A20945AA400C58C1F /* TabbarTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarTwoVC.swift; sourceTree = "<group>"; };
+		8513DD8C20945AB400C58C1F /* TabbarThreeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarThreeVC.swift; sourceTree = "<group>"; };
 		8514C50620900EEB00FA7469 /* LYURouter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LYURouter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8514C50920900EEB00FA7469 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8514C50B20900EEB00FA7469 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -41,6 +49,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8513DD8720945A6E00C58C1F /* tabbarvc */ = {
+			isa = PBXGroup;
+			children = (
+				8513DD8820945A8600C58C1F /* TabbarOneVC.swift */,
+				8513DD8A20945AA400C58C1F /* TabbarTwoVC.swift */,
+				8513DD8C20945AB400C58C1F /* TabbarThreeVC.swift */,
+			);
+			path = tabbarvc;
+			sourceTree = "<group>";
+		};
 		8514C4FD20900EEB00FA7469 = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +81,8 @@
 				8514C51B20900EF400FA7469 /* LYURouter */,
 				8514C50920900EEB00FA7469 /* AppDelegate.swift */,
 				8514C50B20900EEB00FA7469 /* ViewController.swift */,
+				8513DD85209443F800C58C1F /* RouterViewController.swift */,
+				8513DD8720945A6E00C58C1F /* tabbarvc */,
 				8514C50D20900EEB00FA7469 /* Main.storyboard */,
 				8514C51020900EEB00FA7469 /* Assets.xcassets */,
 				8514C51220900EEB00FA7469 /* LaunchScreen.storyboard */,
@@ -155,8 +175,12 @@
 				8514C50C20900EEB00FA7469 /* ViewController.swift in Sources */,
 				8514C51D20900F0800FA7469 /* LYURouter.swift in Sources */,
 				8514C50A20900EEB00FA7469 /* AppDelegate.swift in Sources */,
+				8513DD8B20945AA400C58C1F /* TabbarTwoVC.swift in Sources */,
 				8514C51F209010E200FA7469 /* LYURouterExtension.swift in Sources */,
+				8513DD8920945A8600C58C1F /* TabbarOneVC.swift in Sources */,
 				8566127220916420006E7A7E /* UIViewController+LYURouter.swift in Sources */,
+				8513DD86209443F800C58C1F /* RouterViewController.swift in Sources */,
+				8513DD8D20945AB400C58C1F /* TabbarThreeVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
