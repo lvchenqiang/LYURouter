@@ -134,17 +134,17 @@ class LYURouterHandle: NSObject {
     ///  配置web容器从外部获取url的property的字段名
     ///
     /// - Returns: property的字段名
-    class func LYUWebURLKey() -> String{
+    static var LYUWebURLKey:String = {
         return "";
-    }
+    }()
     
     
     ///  配置webVC的className，使用的时候可以通过category重写方法配置
     ///
     /// - Returns: webVC的className
-    class func LYUWebVCClassName() -> String{
+    static var LYUWebVCClassName:String = {
         return "";
-    }
+    }()
     
     
     
@@ -161,36 +161,7 @@ class LYURouterHandle: NSObject {
         
     }
     
-    
-    class func switchTab(vcClassName:String, options:LYURouterOptions){
-        
-        let rootVC = UIApplication.shared.keyWindow?.rootViewController ;
-        if(vcClassName.currentClass == nil){
-            return;
-        }
-       
-        let targetType = vcClassName.currentClass! as! UIViewController.Type
-        
-        if let rootVC = rootVC {
-            let index = targetType.routerTabIndex();
-            if(rootVC is UITabBarController){
-                let tabBarVC = rootVC as! UITabBarController;
-                 /// 路由开始加载
-                var options = options;
-               options = LYURouterHandle.routerStartAction(vc: tabBarVC.viewControllers![index], options: options);
-                if(tabBarVC.selectedViewController is UINavigationController){
-                    let nvc = tabBarVC.viewControllers![index] as! UINavigationController;
-                    nvc.popToRootViewController(animated: false);
-                    tabBarVC.selectedIndex = index;
-                    
-                }else{
-                    tabBarVC.selectedIndex = index;
-                } 
-            }
-            
-        }
-    }
-    
+
     
     ///  解析JSON文件 获取到所有的Modules
     ///
@@ -209,18 +180,14 @@ class LYURouterHandle: NSObject {
             options =  LYURouter.shareRouter.routeStartAction!(options,NSStringFromClass(type(of: vc)));
         }
         
-        if(vc is LYURouterDelegate && vc.responds(to: #selector(LYURouterDelegate.routerToStart(_:)))){
-            vc.perform(#selector(LYURouterDelegate.routerToStart(_:)), with: options);
-        }
+      
         return options;
     }
     
     // MARK:路由结束
      class func routerFinishAction(vc:UIViewController,options:LYURouterOptions){
         /// 触发代理的操作
-        if(vc is LYURouterDelegate && vc.responds(to: #selector(LYURouterDelegate.routerToFinish(_:)))){
-            vc.perform(#selector(LYURouterDelegate.routerToFinish(_:)), with: options);
-        }
+      
         
     }
     
@@ -254,12 +221,33 @@ extension String{
         
     }
     
-}
-
-
-extension Array
-{
-    func setarr(){
-        
+    /// 获得参数
+    var toUrlParams:[String:String]{
+        get{
+            var params = [String:String]()
+            let url = URL(string: self);
+            if let url = url, let paramstring = url.query{
+                paramstring.split(separator: "&").forEach { (index) in
+                    let tmp =  index.split(separator: "=")
+                    if(tmp.count > 1){
+                        params[String(tmp[0])] = String(tmp[1])
+                    }
+                }
+            }
+            return params;
+        }
     }
+    /// 获得host
+    var toUrlHost:String {
+        get{
+               let url = URL(string: self);
+               var host = "";
+               if let url = url, let hoststr = url.host{
+                host = hoststr;
+              }
+            return host;
+        }
+    }
+    
 }
+

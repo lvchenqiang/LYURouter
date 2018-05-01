@@ -16,7 +16,6 @@ import UIKit
     
 }
 
-
 extension LYURouterDelegate where Self:UIViewController
 {
     func routerToFinish(_ options: LYURouterOptions)
@@ -35,6 +34,7 @@ extension UIViewController
     
     private struct AssociatedKeys{
         static var kRouterTransformStyleKey = "kRouterTransformStyleKey"
+        static var kLYURouter_MundleID = "kLYURouter_MundleID"
     }
     
     // MARK:路由的前进风格
@@ -46,9 +46,24 @@ extension UIViewController
             objc_setAssociatedObject(self, &AssociatedKeys.kRouterTransformStyleKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
-    
 
-  
+    var lyu_mundleID:String {
+        get{
+            return objc_getAssociatedObject(self, &AssociatedKeys.kLYURouter_MundleID) as? String ?? "";
+        }
+        set{
+            objc_setAssociatedObject(self, &AssociatedKeys.kLYURouter_MundleID, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC);
+        }
+    }
+
+    override open func setValue(_ value: Any?, forUndefinedKey key: String) {
+        if(key == LYURouterHandle.LYURouterModuleIDKey){
+            self.lyu_mundleID = value as? String ?? "";
+        }
+        
+        
+        
+    }
 // MARK:Methods
     // MARK:路由初始化方法
    @objc class func routerInstanceViewController() -> UIViewController

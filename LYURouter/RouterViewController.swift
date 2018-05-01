@@ -13,6 +13,7 @@ class RouterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .red;
+        self.title = "RouterViewController"
         // Do any additional setup after loading the view.
     }
 
@@ -22,7 +23,9 @@ class RouterViewController: UIViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-         LYURouter.open(vcClassName: "TabbarOneVC");
+//         LYURouter.open(vcClassName: "TabbarOneVC");
+//        LYURouter.replaceCurrentVC(targetVC: TestViewController());
+        LYURouter.open(uri: "router://ViewController?index=123&params=3434")
     }
  
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		614872FB20983C5F005CD637 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614872FA20983C5F005CD637 /* TestViewController.swift */; };
+		614872FF209844A0005CD637 /* LYUBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614872FE209844A0005CD637 /* LYUBrowser.swift */; };
+		614873012098457D005CD637 /* LYUBrowserConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614873002098457D005CD637 /* LYUBrowserConfig.swift */; };
+		6148730320984590005CD637 /* LYUProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6148730220984590005CD637 /* LYUProgressBar.swift */; };
 		8513DD86209443F800C58C1F /* RouterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD85209443F800C58C1F /* RouterViewController.swift */; };
 		8513DD8920945A8600C58C1F /* TabbarOneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD8820945A8600C58C1F /* TabbarOneVC.swift */; };
 		8513DD8B20945AA400C58C1F /* TabbarTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8513DD8A20945AA400C58C1F /* TabbarTwoVC.swift */; };
@@ -22,6 +26,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		614872FA20983C5F005CD637 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		614872FE209844A0005CD637 /* LYUBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LYUBrowser.swift; sourceTree = "<group>"; };
+		614873002098457D005CD637 /* LYUBrowserConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LYUBrowserConfig.swift; sourceTree = "<group>"; };
+		6148730220984590005CD637 /* LYUProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LYUProgressBar.swift; sourceTree = "<group>"; };
 		8513DD85209443F800C58C1F /* RouterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterViewController.swift; sourceTree = "<group>"; };
 		8513DD8820945A8600C58C1F /* TabbarOneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarOneVC.swift; sourceTree = "<group>"; };
 		8513DD8A20945AA400C58C1F /* TabbarTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarTwoVC.swift; sourceTree = "<group>"; };
@@ -49,6 +57,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		614872FD20984487005CD637 /* LYUWeb */ = {
+			isa = PBXGroup;
+			children = (
+				614872FE209844A0005CD637 /* LYUBrowser.swift */,
+				614873002098457D005CD637 /* LYUBrowserConfig.swift */,
+				6148730220984590005CD637 /* LYUProgressBar.swift */,
+			);
+			path = LYUWeb;
+			sourceTree = "<group>";
+		};
 		8513DD8720945A6E00C58C1F /* tabbarvc */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,10 +96,12 @@
 		8514C50820900EEB00FA7469 /* LYURouter */ = {
 			isa = PBXGroup;
 			children = (
+				614872FD20984487005CD637 /* LYUWeb */,
 				8514C51B20900EF400FA7469 /* LYURouter */,
 				8514C50920900EEB00FA7469 /* AppDelegate.swift */,
 				8514C50B20900EEB00FA7469 /* ViewController.swift */,
 				8513DD85209443F800C58C1F /* RouterViewController.swift */,
+				614872FA20983C5F005CD637 /* TestViewController.swift */,
 				8513DD8720945A6E00C58C1F /* tabbarvc */,
 				8514C50D20900EEB00FA7469 /* Main.storyboard */,
 				8514C51020900EEB00FA7469 /* Assets.xcassets */,
@@ -172,14 +192,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				614872FB20983C5F005CD637 /* TestViewController.swift in Sources */,
+				614873012098457D005CD637 /* LYUBrowserConfig.swift in Sources */,
 				8514C50C20900EEB00FA7469 /* ViewController.swift in Sources */,
 				8514C51D20900F0800FA7469 /* LYURouter.swift in Sources */,
 				8514C50A20900EEB00FA7469 /* AppDelegate.swift in Sources */,
 				8513DD8B20945AA400C58C1F /* TabbarTwoVC.swift in Sources */,
 				8514C51F209010E200FA7469 /* LYURouterExtension.swift in Sources */,
 				8513DD8920945A8600C58C1F /* TabbarOneVC.swift in Sources */,
+				614872FF209844A0005CD637 /* LYUBrowser.swift in Sources */,
 				8566127220916420006E7A7E /* UIViewController+LYURouter.swift in Sources */,
 				8513DD86209443F800C58C1F /* RouterViewController.swift in Sources */,
+				6148730320984590005CD637 /* LYUProgressBar.swift in Sources */,
 				8513DD8D20945AB400C58C1F /* TabbarThreeVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
