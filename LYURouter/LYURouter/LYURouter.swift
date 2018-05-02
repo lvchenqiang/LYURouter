@@ -16,12 +16,20 @@ import UIKit
 
 class LYURouter: NSObject {
     
-    var modules:[[String:String]] {
+    var modules:[[String:AnyHashable]] {
         get{
-            var datas = [[String:String]]();
+            var results = [[String:AnyHashable]]();
+            for file in LYURouter.shareRouter.routerFileNames
+            {
+                let path = Bundle.main.path(forResource: file, ofType: nil);
+                if  let data = try? Data(contentsOf: URL(fileURLWithPath: path!)){
+                    if let result = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers){
+                        results.append(result as! [String:AnyHashable])
+                    }
+                }
+            }
             
-            
-            return datas;
+            return results;
         }
     }
     /// keywindow的rootVC的初始化方式
@@ -170,6 +178,10 @@ class LYURouter: NSObject {
         /// 模块的类型  查询本地是否支持打开此页面 host关联到mundleID
         let mundleID = uri.toUrlHost;
         /// 检查本地的配置信息
+//        let targetType =  LYURouter.shareRouter.modules.filter { (<#[String : AnyHashable]#>) -> Bool in
+//            <#code#>
+//        }
+        
         
         if(params.keys.contains(LYURouter.shareRouter.routerHandle.lyu_ModuleTypeKey)){ /// viewcontroller
             /// 从mundleID 绑定host
@@ -273,7 +285,7 @@ class LYURouter: NSObject {
      // MARK:配置路由信息
     class func configRouterFiles(routerFileNames:[String]){
         LYURouter.shareRouter.routerFileNames = routerFileNames;
-        LYURouter.shareRouter.routerHandle.getModulesFromJsonFile(files: routerFileNames);
+        
         
     }
     

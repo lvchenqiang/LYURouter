@@ -131,18 +131,14 @@ protocol LYURouterHandleDelegate {
      func lyu_OtherActions(actionType:String, url:URL, extra:NSDictionary, completeBlock:@escaping () -> Void);
     
     
-    /// 处理从bundle中获得路由的相关配置信息
-    ///
-    /// - Parameter files: 文件名称
-    /// - Returns: 返回文件的资源
-     func getModulesFromJsonFile(files:[String]) -> [String];
-    
-    
+
     
     
 }
 
 class LYURouterHandle:LYURouterHandleDelegate {
+  
+    
   
     
      var lyu_UrlSchemes: [String]{
@@ -230,24 +226,21 @@ class LYURouterHandle:LYURouterHandleDelegate {
     ///  解析JSON文件 获取到所有的Modules
     ///
     /// - Parameter file: 文件名
-     func getModulesFromJsonFile(files:[String]) -> [String]{
-         for file in files
-         {
-             let path = Bundle.main.path(forResource: file, ofType: nil);
-            if  let data = try? Data(contentsOf: URL(fileURLWithPath: path!)){
-                if let result = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers){
-                 
-                    
-                }
-            }
-            
-            
-            
-            
-        }
-        
-        return [""];
-    }
+//    func getModulesFromJsonFile(files:[String]) -> [[String:AnyHashable]]{
+//
+//        var results = [[String:AnyHashable]]();
+//         for file in files
+//         {
+//             let path = Bundle.main.path(forResource: file, ofType: nil);
+//            if  let data = try? Data(contentsOf: URL(fileURLWithPath: path!)){
+//                if let result = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers){
+//                   results.append(result as! [String:AnyHashable])
+//                }
+//            }
+//        }
+//
+//        return results;
+//    }
     
 }
 
