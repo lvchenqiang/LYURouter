@@ -25,11 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window?.rootViewController = UINavigationController(rootViewController: ViewController());
         self.window?.rootViewController = tabbarVC;
         self.window?.makeKeyAndVisible();
+        LYURouter.configRouterFiles(routerFileNames: ["modules.json"]);
+        
         
         LYURouter.shareRouter.routeStartAction = {options,url in
             if(url == "ViewController"){
                 options.defaultParams["name"] = "李四"
             }
+            options.defaultParams[LYURouter.shareRouter.routerHandle.lyu_ModuleIDKey] = url;
             return options;
         }
         return true

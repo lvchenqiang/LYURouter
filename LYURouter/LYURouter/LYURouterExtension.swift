@@ -77,35 +77,127 @@ class LYURouterOptions: NSObject {
 
 
 
-class LYURouterHandle: NSObject {
-    
-    
-    
+
+protocol LYURouterHandleDelegate {
     /// app支持的url协议组成的数组
-    static var urlSchemes:[String] {
-        get{
-            return ["http","https","file","itms-apps","router"];
-        }
-    }
+     var lyu_UrlSchemes:[String]{get}
     
     
     /// 模块的类型名字的可以，用来解析模块的类型
-    static var LYUModuleTypeKey:String {
+     var lyu_ModuleTypeKey:String {get}
+    
+    
+    ///  沙盒基础路径，该目录下用于保存后台下发的路由配置信息，以及h5模块文件
+     var lyu_SandBoxBasePath:String {get}
+    
+    
+    /// 用来解析moduleID的key
+     var lyu_ModuleIDKey:String {get}
+    
+    
+    /// 用来区分appweb容器打开网页，其余情况通过safari打开网页  （LYURouterHttpOpenStyleKey=1）
+     var lyu_HttpOpenStyleKey:String {get}
+    
+    
+    ///  配置web容器从外部获取url的property的字段名
+    ///
+    /// - Returns: property的字段名
+     var lyu_WebURLKey:String {get}
+    
+    
+    
+    ///  配置webVC的className，使用的时候可以通过category重写方法配置
+    ///
+    /// - Returns: webVC的className
+     var lyu_WebVCClassName:String {get}
+    
+    
+    /// 对传入的url进行校验
+    ///
+    /// - Parameter url: url
+    /// - Returns: 是否合法
+     func  lyu_SafeValidateURL(url:String) -> Bool;
+    
+
+    
+    
+    /// 处理路由不能处理的一些事件
+    ///
+    /// - Parameters:
+    ///   - actionType: actionType
+    ///   - url: url
+    ///   - extra: extra
+    ///   - completeBlock: completeBlock
+     func lyu_OtherActions(actionType:String, url:URL, extra:NSDictionary, completeBlock:@escaping () -> Void);
+    
+    
+    /// 处理从bundle中获得路由的相关配置信息
+    ///
+    /// - Parameter files: 文件名称
+    /// - Returns: 返回文件的资源
+     func getModulesFromJsonFile(files:[String]) -> [String];
+    
+    
+    
+    
+}
+
+class LYURouterHandle:LYURouterHandleDelegate {
+  
+    
+     var lyu_UrlSchemes: [String]{
         get{
-            return "ViewController";
+            return ["http","https","file","itms-apps","LYURouter"];
         }
     }
     
-    ///  沙盒基础路径，该目录下用于保存后台下发的路由配置信息，以及h5模块文件
-    static var sandBoxBasePath:String {
+     var lyu_ModuleTypeKey: String {
         get{
-           return NSHomeDirectory();
+         return "LYUModuleType.ViewController";
+        }
+    }
+    
+     var lyu_SandBoxBasePath: String{
+        get{
+            return NSHomeDirectory();
+        }
+    }
+    
+     var lyu_ModuleIDKey: String{
+        get{
+            return "LYUModuleIDKey"
+        }
+    }
+    
+     var lyu_HttpOpenStyleKey: String{
+        get{
+            return "LYURouterAppOpenKey";
+        }
+    }
+    
+     var lyu_WebURLKey: String{
+        get{
+            return "LYURouterWebURLKey";
+        }
+    }
+    
+     var lyu_WebVCClassName: String{
+        get{
+            return "LYUWebVCClassName"
+        }
+    }
+    
+    
+    ///  沙盒基础路径，该目录下用于保存后台下发的路由配置信息，以及h5模块文件
+     var sandBoxBasePath:String {
+        get{
+            return NSHomeDirectory();
         }
     }
     
     
     /// 用来解析moduleID的key
-    static var LYURouterModuleIDKey:String
+     var LYURouterModuleIDKey:String
     {
         get{
             return "LYUModuleIDKey"
@@ -114,81 +206,47 @@ class LYURouterHandle: NSObject {
     
     
     ///  在url参数后设置 LYURouterHttpOpenStyleKey=1 时通过appweb容器打开网页，其余情况通过safari打开网页
-    static var LYURouterHttpOpenStyleKey:String{
+     var LYURouterHttpOpenStyleKey:String{
         get{
-         return "LYURouterAppOpenKey";
+            return "LYURouterAppOpenKey";
         }
     }
     
     
-    /// 对传入的url进行校验
-    ///
-    /// - Parameter url: url
-    /// - Returns: 是否合法
-    class func safeValidateURL(url:String) -> Bool
-    {
+    
+     func lyu_SafeValidateURL(url: String) -> Bool {
+       
         return true;
     }
     
-    
-    ///  配置web容器从外部获取url的property的字段名
-    ///
-    /// - Returns: property的字段名
-    static var LYUWebURLKey:String = {
-        return "";
-    }()
-    
-    
-    ///  配置webVC的className，使用的时候可以通过category重写方法配置
-    ///
-    /// - Returns: webVC的className
-    static var LYUWebVCClassName:String = {
-        return "";
-    }()
-    
-    
-    
-    /// 除了路由跳转以外的操作
-    ///
-    /// - Parameters:
-    ///   - actionType: 操作的类型 viewcontroller view
-    ///   - url: url
-    ///   - extra: 额外传入的参数
-    ///   - completeBlock: 操作成功后的回调
-    class func otherActions(actionType:String, url:URL, extra:NSDictionary, completeBlock:@escaping () -> Void)
-    {
-        
-        
+     func lyu_OtherActions(actionType: String, url: URL, extra: NSDictionary, completeBlock: @escaping () -> Void) {
+        debugPrint("处理路由不能处理的路由事件 在这里自定义解决");
     }
     
+  
+
 
     
     ///  解析JSON文件 获取到所有的Modules
     ///
     /// - Parameter file: 文件名
-    class func getModulesFromJsonFile(files:[String]) -> [String]{
-      
-        
-        return [""];
-    }
-    
-    
-        // MARK:路由开始
-     class func routerStartAction(vc:UIViewController,options:LYURouterOptions) -> LYURouterOptions{
-        var options = options;
-        if(LYURouter.shareRouter.routeStartAction != nil){
-            options =  LYURouter.shareRouter.routeStartAction!(options,NSStringFromClass(type(of: vc)));
+     func getModulesFromJsonFile(files:[String]) -> [String]{
+         for file in files
+         {
+             let path = Bundle.main.path(forResource: file, ofType: nil);
+            if  let data = try? Data(contentsOf: URL(fileURLWithPath: path!)){
+                if let result = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers){
+                 
+                    
+                }
+            }
+            
+            
+            
+            
         }
         
-      
-        return options;
-    }
-    
-    // MARK:路由结束
-     class func routerFinishAction(vc:UIViewController,options:LYURouterOptions){
-        /// 触发代理的操作
-      
-        
+        return [""];
     }
     
 }

@@ -1,0 +1,26 @@
+[
+ {
+ "moduleID":"TabbarOneVC",
+ "type":"ViewController",
+ "targetVC":"TabbarOneVC",
+ "desc":"用户主页"
+ },
+ {
+ "moduleID":"TabbarTwoVC",
+ "type":"ViewController",
+ "targetVC":"TabbarTwoVC",
+ "desc":"精选"
+ },
+ {
+ "moduleID":"three",
+ "type":"ViewController",
+ "targetVC":"TabbarThreeVC",
+ "desc":"three"
+ },
+ {
+ "moduleID":"ViewController.bundle",
+ "type":"ViewController",
+ "targetVC":"ViewController",
+ "desc":"ViewController"
+ }
+ ]

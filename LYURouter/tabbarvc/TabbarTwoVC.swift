@@ -12,7 +12,7 @@ class TabbarTwoVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "TabbarTwoVC"
+        self.title  = self.lyu_mundleID;
         self.view.backgroundColor = .yellow
         // Do any additional setup after loading the view.
     }

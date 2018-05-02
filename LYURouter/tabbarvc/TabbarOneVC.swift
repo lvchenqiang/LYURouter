@@ -13,7 +13,7 @@ class TabbarOneVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title  = "TabbarOneVC"
+        self.title  = self.lyu_mundleID;
          self.view.backgroundColor = UIColor.cyan
         // Do any additional setup after loading the view.
     }

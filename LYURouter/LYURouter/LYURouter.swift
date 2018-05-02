@@ -16,9 +16,18 @@ import UIKit
 
 class LYURouter: NSObject {
     
-     var modules:NSSet = NSSet();
+    var modules:[[String:String]] {
+        get{
+            var datas = [[String:String]]();
+            
+            
+            return datas;
+        }
+    }
     /// keywindow的rootVC的初始化方式
     var windowRootVCStyle = LYURouterWindowRootVCStyle.Custom;
+    
+    
     var navigationController:UINavigationController? {
         get{
             let rootVC = UIApplication.shared.keyWindow?.rootViewController;
@@ -39,6 +48,18 @@ class LYURouter: NSObject {
      var routeStartAction:((LYURouterOptions,String) -> (LYURouterOptions))?
     
     
+    /// 处理路由的handle信息
+    var routerHandle:LYURouterHandleDelegate = LYURouterHandle();
+    
+    
+    ///  存储加载的配置文件
+    fileprivate var routerFileNames:[String] = [String]();
+    
+    
+    ///  加载服务器下发的配置文件
+    fileprivate var remoteFilePath:String = "";
+    
+    
     /// 对象共享一个操作的实例
     static var shareRouter:LYURouter = {
         let router = LYURouter();
@@ -48,7 +69,10 @@ class LYURouter: NSObject {
         return router;
     }()
     
-    
+    // MARK:注册一个handle 自定义处理相关机制
+    func register(handle:LYURouterHandleDelegate){
+        LYURouter.shareRouter.routerHandle = handle;
+    }
     // MARK:本地原生打开方式
     
     /// 通过类名 打开页面
@@ -80,9 +104,6 @@ class LYURouter: NSObject {
         if(complete != nil){
             complete!();
         }
-
-       
-        
     }
     
     
@@ -112,13 +133,13 @@ class LYURouter: NSObject {
             return;
         }
        
-        if(!LYURouterHandle.urlSchemes.contains(scheme)){ /// 不包含此协议  不能跳转
+        if(!LYURouter.shareRouter.routerHandle.lyu_UrlSchemes.contains(scheme)){ /// 不包含此协议  不能跳转
             debugPrint("协议不支持 该类型跳转");
             return ;
         }
         
         /// 校验url
-        if(!LYURouterHandle.safeValidateURL(url: uri)){ /// 校验uri是否合法
+        if(!LYURouter.shareRouter.routerHandle.lyu_SafeValidateURL(url: uri)){ /// 校验uri是否合法
             debugPrint("uri 校验未通过")
             return ;
         }
@@ -126,23 +147,41 @@ class LYURouter: NSObject {
         switch scheme {
         case "http","https":
             self.httpOpen(uri: url, extra: extra);
-            break;
+            return;
         case "file":
             self.localOpen(uri: uri, extra: extra);
-            break;
+            return;
         case "itms-apps":
             self.openExternal(targetURL: url);
-            break;
-        case "router":
-            /// 自定义打开本地页面
-            let params = uri.toUrlParams;
-            let target = uri.toUrlHost;
-            self.open(vcClassName: target, options: LYURouterOptions.options(params: params), complete: nil);
-            
-            break;
+            return;
+//        case "router":
+//            /// 自定义打开本地页面
+//            let params = uri.toUrlParams;
+//            let target = uri.toUrlHost;
+//            self.open(vcClassName: target, options: LYURouterOptions.options(params: params), complete: nil);
+//
+//            break;
         default:
             break;
         }
+        
+       
+        let params = uri.toUrlParams;
+        /// 模块的类型  查询本地是否支持打开此页面 host关联到mundleID
+        let mundleID = uri.toUrlHost;
+        /// 检查本地的配置信息
+        
+        if(params.keys.contains(LYURouter.shareRouter.routerHandle.lyu_ModuleTypeKey)){ /// viewcontroller
+            /// 从mundleID 绑定host
+            debugPrint(uri.toUrlHost);
+  
+        }
+        
+        
+        
+        
+        
+        
         
         
     }
@@ -233,6 +272,8 @@ class LYURouter: NSObject {
     
      // MARK:配置路由信息
     class func configRouterFiles(routerFileNames:[String]){
+        LYURouter.shareRouter.routerFileNames = routerFileNames;
+        LYURouter.shareRouter.routerHandle.getModulesFromJsonFile(files: routerFileNames);
         
     }
     
@@ -286,7 +327,11 @@ extension LYURouter
         
         /// 路由开始加载
         var options = options;
-        options = LYURouterHandle.routerStartAction(vc: vc, options: options);
+        
+        /// 处理路由的回调
+        if(LYURouter.shareRouter.routeStartAction != nil){
+            options =  LYURouter.shareRouter.routeStartAction!(options,NSStringFromClass(type(of: vc)));
+        }
 
         if(options.transformStyle == .Other){
             options.transformStyle = vc.routerTransformStyle;
@@ -346,21 +391,21 @@ extension LYURouter
         extra.forEach { (key,value) in
             params[key] = value;
         }
-        params[LYURouterHandle.LYUWebURLKey] = uri.absoluteString;
-        self.open(vcClassName: LYURouterHandle.LYUWebVCClassName, options: LYURouterOptions.options(params: params), complete: nil);
+        params[LYURouter.shareRouter.routerHandle.lyu_WebURLKey] = uri.absoluteString;
+        self.open(vcClassName: LYURouter.shareRouter.routerHandle.lyu_WebVCClassName, options: LYURouterOptions.options(params: params), complete: nil);
         
     }
    
     // MARK:- 打开本地页面
     fileprivate class func localOpen(uri:String, extra:[String:AnyHashable]){
         
-        let filepath = "://" +  LYURouterHandle.sandBoxBasePath + uri.replacingOccurrences(of: "://", with: "");
+        let filepath = "://" +  LYURouter.shareRouter.routerHandle.lyu_SandBoxBasePath + uri.replacingOccurrences(of: "://", with: "");
         var params  : [String:AnyHashable] = uri.toUrlParams;
         extra.forEach { (key,value) in
              params[key] = value;
           }
-       params[LYURouterHandle.LYUWebURLKey] = filepath;
-      self.open(vcClassName: LYURouterHandle.LYUWebVCClassName, options: LYURouterOptions.options(params: params), complete: nil);
+       params[LYURouter.shareRouter.routerHandle.lyu_WebURLKey] = filepath;
+      self.open(vcClassName:LYURouter.shareRouter.routerHandle.lyu_WebVCClassName, options: LYURouterOptions.options(params: params), complete: nil);
  
     }
     
@@ -380,7 +425,11 @@ extension LYURouter
                 let tabBarVC = rootVC as! UITabBarController;
                 /// 路由开始加载
                 var options = options;
-                options = LYURouterHandle.routerStartAction(vc: tabBarVC.viewControllers![index], options: options);
+                /// 处理路由的回调
+                if(LYURouter.shareRouter.routeStartAction != nil){
+                    options =  LYURouter.shareRouter.routeStartAction!(options,NSStringFromClass(type(of: tabBarVC.viewControllers![index])));
+                }
+               
                 self.configVC(vc: tabBarVC.selectedViewController!, options: options, forward: true);
                 
                 if(tabBarVC.selectedViewController is UINavigationController){
@@ -404,7 +453,7 @@ extension LYURouter
     // MARK:- configVC 触发代理事件
     fileprivate class func configVC(vc:UIViewController, options:LYURouterOptions, forward:Bool){
 
-        vc.setValue(options.moduleID, forUndefinedKey: LYURouterHandle.LYURouterModuleIDKey);
+        vc.setValue(options.moduleID, forUndefinedKey: LYURouter.shareRouter.routerHandle.lyu_ModuleIDKey);
         if(forward){ /// 路由前进
             if(vc is LYURouterDelegate && vc.responds(to: #selector(LYURouterDelegate.routerToStart(_:)))){
                 vc.perform(#selector(LYURouterDelegate.routerToStart(_:)), with: options);

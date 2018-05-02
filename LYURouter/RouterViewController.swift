@@ -25,7 +25,7 @@ class RouterViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //         LYURouter.open(vcClassName: "TabbarOneVC");
 //        LYURouter.replaceCurrentVC(targetVC: TestViewController());
-        LYURouter.open(uri: "router://ViewController?index=123&params=3434")
+        LYURouter.open(uri: "LYURouter://ViewController.bundle?index=123&params=3434&\(LYURouter.shareRouter.routerHandle.lyu_ModuleTypeKey)=Viewcontroller")
     }
  
 

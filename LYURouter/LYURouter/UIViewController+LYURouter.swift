@@ -57,12 +57,10 @@ extension UIViewController
     }
 
     override open func setValue(_ value: Any?, forUndefinedKey key: String) {
-        if(key == LYURouterHandle.LYURouterModuleIDKey){
+       
+        if(key == LYURouter.shareRouter.routerHandle.lyu_ModuleIDKey){
             self.lyu_mundleID = value as? String ?? "";
         }
-        
-        
-        
     }
 // MARK:Methods
     // MARK:路由初始化方法
