@@ -128,7 +128,7 @@ protocol LYURouterHandleDelegate {
     ///   - url: url
     ///   - extra: extra
     ///   - completeBlock: completeBlock
-     func lyu_OtherActions(actionType:String, url:URL, extra:NSDictionary, completeBlock:@escaping () -> Void);
+    func lyu_OtherActions(actionType:String, url:URL, extra:[String:AnyHashable], completeBlock:(() -> Void)?);
     
     
 
@@ -149,7 +149,7 @@ class LYURouterHandle:LYURouterHandleDelegate {
     
      var lyu_ModuleTypeKey: String {
         get{
-         return "LYUModuleType.ViewController";
+         return "ViewController";
         }
     }
     
@@ -179,7 +179,7 @@ class LYURouterHandle:LYURouterHandleDelegate {
     
      var lyu_WebVCClassName: String{
         get{
-            return "LYUWebVCClassName"
+            return "LYUWebViewController"
         }
     }
     
@@ -215,90 +215,12 @@ class LYURouterHandle:LYURouterHandleDelegate {
         return true;
     }
     
-     func lyu_OtherActions(actionType: String, url: URL, extra: NSDictionary, completeBlock: @escaping () -> Void) {
+    func lyu_OtherActions(actionType: String, url: URL, extra: [String:AnyHashable], completeBlock: (() -> Void)?) {
         debugPrint("处理路由不能处理的路由事件 在这里自定义解决");
     }
     
-  
-
-
-    
-    ///  解析JSON文件 获取到所有的Modules
-    ///
-    /// - Parameter file: 文件名
-//    func getModulesFromJsonFile(files:[String]) -> [[String:AnyHashable]]{
-//
-//        var results = [[String:AnyHashable]]();
-//         for file in files
-//         {
-//             let path = Bundle.main.path(forResource: file, ofType: nil);
-//            if  let data = try? Data(contentsOf: URL(fileURLWithPath: path!)){
-//                if let result = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers){
-//                   results.append(result as! [String:AnyHashable])
-//                }
-//            }
-//        }
-//
-//        return results;
-//    }
     
 }
 
 
-extension String{
-    
-    var currentClass:AnyClass? {
-        get{
-            
-            if  let appName: String = Bundle.main.infoDictionary!["CFBundleName"] as? String{
-                return NSClassFromString("\(appName).\(self)")
-            }
-            return nil;
-        }
-  }
-    
-
-    func convertToClass<T>(_ type:T.Type) -> T.Type?{
-        
-        if  let appName: String = Bundle.main.infoDictionary!["CFBundleName"] as? String{
-    
-            if let appClass = NSClassFromString("\(appName).\(self)") {
-                return appClass as? T.Type;
-            }
-            return nil;
-    
-        }
-        return nil;
-        
-    }
-    
-    /// 获得参数
-    var toUrlParams:[String:String]{
-        get{
-            var params = [String:String]()
-            let url = URL(string: self);
-            if let url = url, let paramstring = url.query{
-                paramstring.split(separator: "&").forEach { (index) in
-                    let tmp =  index.split(separator: "=")
-                    if(tmp.count > 1){
-                        params[String(tmp[0])] = String(tmp[1])
-                    }
-                }
-            }
-            return params;
-        }
-    }
-    /// 获得host
-    var toUrlHost:String {
-        get{
-               let url = URL(string: self);
-               var host = "";
-               if let url = url, let hoststr = url.host{
-                host = hoststr;
-              }
-            return host;
-        }
-    }
-    
-}
 

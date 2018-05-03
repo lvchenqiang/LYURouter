@@ -24,6 +24,7 @@
 		8514C51F209010E200FA7469 /* LYURouterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8514C51E209010E200FA7469 /* LYURouterExtension.swift */; };
 		8566127220916420006E7A7E /* UIViewController+LYURouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8566127120916420006E7A7E /* UIViewController+LYURouter.swift */; };
 		8585DF9320996A620034346A /* modules.json in Resources */ = {isa = PBXBuildFile; fileRef = 8585DF9220996A620034346A /* modules.json */; };
+		8585DF9D209AF8A40034346A /* LYUWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8585DF9C209AF8A40034346A /* LYUWebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		8514C51E209010E200FA7469 /* LYURouterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LYURouterExtension.swift; sourceTree = "<group>"; };
 		8566127120916420006E7A7E /* UIViewController+LYURouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+LYURouter.swift"; sourceTree = "<group>"; };
 		8585DF9220996A620034346A /* modules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = modules.json; sourceTree = "<group>"; };
+		8585DF9C209AF8A40034346A /* LYUWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LYUWebViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				8514C50B20900EEB00FA7469 /* ViewController.swift */,
 				8513DD85209443F800C58C1F /* RouterViewController.swift */,
 				614872FA20983C5F005CD637 /* TestViewController.swift */,
+				8585DF9C209AF8A40034346A /* LYUWebViewController.swift */,
 				8513DD8720945A6E00C58C1F /* tabbarvc */,
 				8514C50D20900EEB00FA7469 /* Main.storyboard */,
 				8585DF8F209969FF0034346A /* resource */,
@@ -214,6 +217,7 @@
 				8513DD8920945A8600C58C1F /* TabbarOneVC.swift in Sources */,
 				614872FF209844A0005CD637 /* LYUBrowser.swift in Sources */,
 				8566127220916420006E7A7E /* UIViewController+LYURouter.swift in Sources */,
+				8585DF9D209AF8A40034346A /* LYUWebViewController.swift in Sources */,
 				8513DD86209443F800C58C1F /* RouterViewController.swift in Sources */,
 				6148730320984590005CD637 /* LYUProgressBar.swift in Sources */,
 				8513DD8D20945AB400C58C1F /* TabbarThreeVC.swift in Sources */,
@@ -361,7 +365,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 37RLQ6E4SD;
 				INFOPLIST_FILE = LYURouter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -378,7 +384,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 37RLQ6E4SD;
 				INFOPLIST_FILE = LYURouter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

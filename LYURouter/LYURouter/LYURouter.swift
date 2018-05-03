@@ -24,7 +24,7 @@ class LYURouter: NSObject {
                 let path = Bundle.main.path(forResource: file, ofType: nil);
                 if  let data = try? Data(contentsOf: URL(fileURLWithPath: path!)){
                     if let result = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers){
-                        results.append(result as! [String:AnyHashable])
+                        results.append(contentsOf: result as! [[String:AnyHashable]])
                     }
                 }
             }
@@ -178,15 +178,27 @@ class LYURouter: NSObject {
         /// 模块的类型  查询本地是否支持打开此页面 host关联到mundleID
         let mundleID = uri.toUrlHost;
         /// 检查本地的配置信息
-//        let targetType =  LYURouter.shareRouter.modules.filter { (<#[String : AnyHashable]#>) -> Bool in
-//            <#code#>
-//        }
+        var targetType = "";
+        var vcClassName = "";
+        LYURouter.shareRouter.modules.forEach { (params) in
+            if((params["moduleID"] as! String) == mundleID){
+                targetType = params["type"] as! String
+                vcClassName = params["targetVC"] as! String
+            }
+        }
         
-        
-        if(params.keys.contains(LYURouter.shareRouter.routerHandle.lyu_ModuleTypeKey)){ /// viewcontroller
-            /// 从mundleID 绑定host
-            debugPrint(uri.toUrlHost);
-  
+        if targetType == LYURouter.shareRouter.routerHandle.lyu_ModuleTypeKey{ /// 打开本地的页面
+            self.open(vcClassName: vcClassName, options: LYURouterOptions.options(params: params), complete: nil);
+            
+        }else if targetType == "H5" {
+            var tmpparams = [String:AnyHashable]();
+            tmpparams[LYURouter.shareRouter.routerHandle.lyu_WebURLKey] = uri;
+            extra.forEach { (key,value) in
+                tmpparams[key] = value;
+            }
+            self.open(vcClassName: LYURouter.shareRouter.routerHandle.lyu_WebVCClassName, options: LYURouterOptions.options(params:tmpparams), complete: nil);
+        }else{
+            LYURouter.shareRouter.routerHandle.lyu_OtherActions(actionType: targetType, url: url, extra: extra, completeBlock: nil);
         }
         
         
@@ -205,7 +217,12 @@ class LYURouter: NSObject {
     class func openExternal(targetURL:URL){
         
         if(targetURL.scheme == "http" || targetURL.scheme == "https"  || targetURL.scheme == "itms-apps" ){
-            UIApplication.shared.open(targetURL, options: ["key":"value"], completionHandler: nil);
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(targetURL, options: ["key":"value"], completionHandler: nil)
+            } else {
+                // Fallback on earlier versions
+                UIApplication.shared.openURL(targetURL);
+            };
         }
     }
     

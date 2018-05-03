@@ -13,7 +13,7 @@ class TabbarThreeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.title  = self.lyu_mundleID;
+        self.title  = "TabbarThreeVC";
         // Do any additional setup after loading the view.
     }
 
