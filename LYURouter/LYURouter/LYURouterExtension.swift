@@ -78,7 +78,7 @@ class LYURouterOptions: NSObject {
 
 
 
-protocol LYURouterHandleDelegate {
+@objc protocol LYURouterHandleDelegate {
     /// app支持的url协议组成的数组
      var lyu_UrlSchemes:[String]{get}
     
@@ -130,13 +130,20 @@ protocol LYURouterHandleDelegate {
     ///   - completeBlock: completeBlock
     func lyu_OtherActions(actionType:String, url:URL, extra:[String:AnyHashable], completeBlock:(() -> Void)?);
     
-    
+   
+    /// 添加前进的转场动画
+    ///
+    /// - Returns: CABasicAnimation
+    @objc optional func lyu_transitionToForward(_ className:String) -> CAAnimation;
 
-    
+    /// 添加后退的转场动画
+    ///
+    /// - Returns: CABasicAnimation
+    @objc optional func lyu_transitionToBackward(_ className:String) -> CAAnimation;
     
 }
 
-class LYURouterHandle:LYURouterHandleDelegate {
+class LYURouterHandle:NSObject,LYURouterHandleDelegate {
   
     
   
@@ -219,6 +226,18 @@ class LYURouterHandle:LYURouterHandleDelegate {
         debugPrint("处理路由不能处理的路由事件 在这里自定义解决");
     }
     
+    func lyu_transitionToForward(_ className: String) -> CAAnimation {
+        /// 创建转场动画
+        let transition = CATransition();
+        transition.type = "rippleEffect";
+        transition.subtype = "90cww";
+        transition.duration = 1.0;
+        transition.beginTime = CACurrentMediaTime();//延迟时间
+        /// 携带值
+        return transition;
+    }
+    
+   
     
 }
 

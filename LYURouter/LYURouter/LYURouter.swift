@@ -510,10 +510,12 @@ extension LYURouter
         
         let newFunc:@convention(block) (UIViewController,UIViewController,Bool)->(Void) = {
             (fromvc,tovc,flag) in
-            
+            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToForward?(""){
+                UIApplication.shared.keyWindow?.layer.add(ani, forKey: nil);
+            }
             debugPrint("开始调用--PUSH----- fromvc: \(fromvc) \n tovc: \(tovc)")
             originalIMP(fromvc, originSelector, tovc, flag);
-              debugPrint("开始调用--PUSH----- fromvc: \(fromvc) \n tovc: \(tovc)")
+            debugPrint("开始调用--PUSH----- fromvc: \(fromvc) \n tovc: \(tovc)")
         };
         
         let imp = imp_implementationWithBlock(unsafeBitCast(newFunc, to: AnyObject.self))
@@ -537,6 +539,9 @@ extension LYURouter
             
             originalIMP(tovc,originSelector,flag);
             
+            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToBackward?(""){
+                UIApplication.shared.keyWindow?.layer.add(ani, forKey: nil);
+            }
             debugPrint("开始调用--dismiss---%@----%d----%@-",tovc,flag);
             
         };
@@ -548,5 +553,7 @@ extension LYURouter
     }
     
 }
+
+
 
 
