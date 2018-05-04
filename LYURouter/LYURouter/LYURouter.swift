@@ -9,11 +9,6 @@
 import Foundation
 import UIKit
 
-
-
-
-
-
 class LYURouter: NSObject {
     
     var modules:[[String:AnyHashable]] {
@@ -245,11 +240,13 @@ class LYURouter: NSObject {
     // MARK:回退到指定的vc 指定vc或者 moduleID 优先使用vc
     class func pop(to vc:UIViewController, animated:Bool = false , options:LYURouterOptions = LYURouterOptions.options()){
         
-        /// 配置vc的信息
-        self.configVC(vc: vc, options: options,forward: false);
+       
         if(LYURouter.shareRouter.navigationController?.presentedViewController != nil){
-  LYURouter.shareRouter.navigationController?.presentedViewController?.dismiss(animated: false, completion: nil);
+            /// 配置vc的信息
+            self.configVC(vc: LYURouter.shareRouter.navigationController!.presentedViewController!, options: options,forward: false);
+            LYURouter.shareRouter.navigationController?.presentedViewController?.dismiss(animated: false, completion: nil);
         }else{
+            self.configVC(vc: vc, options: options, forward: false);
             LYURouter.shareRouter.navigationController?.popToViewController(vc, animated: false);
     }
     }
@@ -341,8 +338,8 @@ extension LYURouter
     {
       
         /// 是否有权限打开此页面
-        if(!type(of: vc).routerCheckAccessOpen(options: options)){
-            type(of: vc).routerHandleNoAccessToOpen(options: options);
+        if(!vc.routerCheckAccessOpen(options: options)){
+            vc.routerHandleNoAccessToOpen(options: options);
             return false;
         }
         /// 校验控制器类型
@@ -497,7 +494,7 @@ extension LYURouter
 
 }
 
-// MARK:-重载系统方法
+// MARK:-挂钩系统转场方法
 extension LYURouter
 {
   private   typealias PushVCType = @convention(c) (UIViewController, Selector, UIViewController, Bool) -> Void
@@ -510,7 +507,7 @@ extension LYURouter
         
         let newFunc:@convention(block) (UIViewController,UIViewController,Bool)->(Void) = {
             (fromvc,tovc,flag) in
-            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToForward?(""){
+            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToForward?(NSStringFromClass(type(of: tovc))){
                 UIApplication.shared.keyWindow?.layer.add(ani, forKey: nil);
             }
             debugPrint("开始调用--PUSH----- fromvc: \(fromvc) \n tovc: \(tovc)")
@@ -539,7 +536,7 @@ extension LYURouter
             
             originalIMP(tovc,originSelector,flag);
             
-            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToBackward?(""){
+            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToBackward?(NSStringFromClass(type(of: tovc))){
                 UIApplication.shared.keyWindow?.layer.add(ani, forKey: nil);
             }
             debugPrint("开始调用--dismiss---%@----%d----%@-",tovc,flag);

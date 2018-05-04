@@ -60,19 +60,19 @@ extension UIViewController
         }
     }
 // MARK:Methods
-    // MARK:路由初始化方法
+    // MARK:初始化方法
    @objc class func routerInstanceViewController() -> UIViewController
     {
         return self.init();
     }
     
     // MARK:校验是否有权限打开此应用
-   @objc  class func routerCheckAccessOpen(options:LYURouterOptions) -> Bool
+   @objc  func routerCheckAccessOpen(options:LYURouterOptions) -> Bool
     {
         return true;
     }
     
-    @objc class func routerHandleNoAccessToOpen(options:LYURouterOptions){
+    @objc func routerHandleNoAccessToOpen(options:LYURouterOptions){
         debugPrint("没有权限打开此UI");
     }
     // MARK:是否属于tabbar

@@ -134,12 +134,12 @@ class LYURouterOptions: NSObject {
     /// 添加前进的转场动画
     ///
     /// - Returns: CABasicAnimation
-    @objc optional func lyu_transitionToForward(_ className:String) -> CAAnimation;
+    @objc optional func lyu_transitionToForward(_ className:String) -> CAAnimation?;
 
     /// 添加后退的转场动画
     ///
     /// - Returns: CABasicAnimation
-    @objc optional func lyu_transitionToBackward(_ className:String) -> CAAnimation;
+    @objc optional func lyu_transitionToBackward(_ className:String) -> CAAnimation?;
     
 }
 
@@ -215,8 +215,6 @@ class LYURouterHandle:NSObject,LYURouterHandleDelegate {
         }
     }
     
-    
-    
      func lyu_SafeValidateURL(url: String) -> Bool {
        
         return true;
@@ -226,14 +224,16 @@ class LYURouterHandle:NSObject,LYURouterHandleDelegate {
         debugPrint("处理路由不能处理的路由事件 在这里自定义解决");
     }
     
-    func lyu_transitionToForward(_ className: String) -> CAAnimation {
+    func lyu_transitionToForward(_ className: String) -> CAAnimation? {
+        if(className != "LYURouter.ViewController"){
+            return nil;
+        }
         /// 创建转场动画
         let transition = CATransition();
         transition.type = "rippleEffect";
         transition.subtype = "90cww";
         transition.duration = 1.0;
         transition.beginTime = CACurrentMediaTime();//延迟时间
-        /// 携带值
         return transition;
     }
     
