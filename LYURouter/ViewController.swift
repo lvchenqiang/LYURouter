@@ -10,6 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    
+    static let vc:ViewController = ViewController();
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -25,9 +28,16 @@ class ViewController: UIViewController {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          LYURouter.open(vcClassName: "RouterViewController");
+        
     }
   
-
+    // MARK:初始化方法
+     override class func routerInstanceViewController() -> UIViewController
+    {
+        return vc;
+    }
+    
+    
     
 }
 

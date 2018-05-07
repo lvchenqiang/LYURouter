@@ -505,13 +505,27 @@ extension LYURouter
         let originMethod = class_getInstanceMethod(UINavigationController.self, originSelector)
         let originalIMP = unsafeBitCast(method_getImplementation(originMethod!), to: PushVCType.self);
         
-        let newFunc:@convention(block) (UIViewController,UIViewController,Bool)->(Void) = {
+        let newFunc:@convention(block) (UINavigationController,UIViewController,Bool)->(Void) = {
             (fromvc,tovc,flag) in
-            if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToForward?(NSStringFromClass(type(of: tovc))){
-                UIApplication.shared.keyWindow?.layer.add(ani, forKey: nil);
-            }
+            
+            
             debugPrint("开始调用--PUSH----- fromvc: \(fromvc) \n tovc: \(tovc)")
-            originalIMP(fromvc, originSelector, tovc, flag);
+           
+            let  contain =   fromvc.viewControllers.contains(tovc);
+            if(contain){
+                debugPrint("包含vc")
+                debugPrint("\(fromvc)")
+                /// 连续跳转单例页面
+            }else{
+                
+                if let ani = LYURouter.shareRouter.routerHandle.lyu_transitionToForward?(NSStringFromClass(type(of: tovc))){
+                    UIApplication.shared.keyWindow?.layer.add(ani, forKey: nil);
+                }
+                originalIMP(fromvc, originSelector, tovc, flag);
+            }
+            
+
+           
             debugPrint("开始调用--PUSH----- fromvc: \(fromvc) \n tovc: \(tovc)")
         };
         
@@ -529,7 +543,7 @@ extension LYURouter
         //
         let originalIMP = unsafeBitCast(method_getImplementation(originMethod!), to: PopVCType.self);
         
-        let newFunc:@convention(block) (UIViewController, Bool)->(Void) = {
+        let newFunc:@convention(block) (UINavigationController, Bool)->(Void) = {
             (tovc,flag) in
             
             debugPrint("开始调用--dismiss---%@----%d----%@-",tovc,flag);
