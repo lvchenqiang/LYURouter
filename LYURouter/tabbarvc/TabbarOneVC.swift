@@ -11,11 +11,14 @@ import UIKit
 
 class TabbarOneVC: UIViewController {
 
+    
+    var popV = LYUPopWindow(frame: UIScreen.main.bounds);
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title  = "TabbarOneVC";
          self.view.backgroundColor = UIColor.cyan
         // Do any additional setup after loading the view.
+        popV.showPop()
     }
 
     override func didReceiveMemoryWarning() {

@@ -30,8 +30,8 @@ class RouterViewController: UIViewController {
 //        LYURouter.open(uri: "LYURouter://ViewController.bundle?index=123&params=3434&\(LYURouter.shareRouter.routerHandle.lyu_ModuleTypeKey)=Viewcontroller")
 //        LYURouter.open(uri: "https://itunes.apple.com/cn/app/id1176775033?mt=8");
  
-        LYURouter.open(vcClassName: "ViewController");
-//        LYURouter.open(uri: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1525348171356&di=48d92da12cc4263635fafe57e3c9e529&imgtype=0&src=http%3A%2F%2Fimg1.3lian.com%2F2015%2Fa1%2F95%2Fd%2F148.jpg")
+//        LYURouter.open(vcClassName: "ViewController");
+        LYURouter.open(uri: "https://github.com/")
     }
  
 

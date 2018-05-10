@@ -30,7 +30,9 @@ class LYUWebViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    deinit {
+        debugPrint("LYUWebViewController 释放了")
+    }
 
 }
 

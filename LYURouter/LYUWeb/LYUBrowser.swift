@@ -60,6 +60,19 @@ class LYUBrowser: UIView {
     /// 代理
     weak var delegate:LYUBrowserDelegate?
     
+    lazy var progressBar:LYULinearProgressBar = {
+        
+        let bar = LYULinearProgressBar(frame: CGRect(x: 0, y: 64, width: UIScreen.main.bounds.size.width, height: 3));
+        bar.trackPadding = 0; /// 上下左右边距
+        bar.barColor = UIColor.white;
+        bar.foregroundColor = UIColor.blue;
+        bar.progressValue = 0;
+        bar.lineCapStyle = .butt
+        bar.isHidden = true
+        return bar;
+    }()
+    
+    /// KVO
     fileprivate var ob_estimatedProgress:NSKeyValueObservation?
     fileprivate var ob_title : NSKeyValueObservation?
     // MARK:构造方法
@@ -75,6 +88,7 @@ class LYUBrowser: UIView {
      init(frame: CGRect, webConfig:WKWebViewConfiguration? = nil, browserConfig:LYUBrowserConfig? = nil) {
         super.init(frame: frame);
         /// 初始化数据
+        
         
         if(webConfig != nil){
             self.webView = WKWebView(frame: frame, configuration: webConfig!);
@@ -100,15 +114,17 @@ class LYUBrowser: UIView {
         /// 注册KVO
        
         self.ob_estimatedProgress =   self.webView.observe(\.estimatedProgress) { (webview, value) in
-            
-             debugPrint(self.webView.estimatedProgress);
+            self.progressBar.progressValue = 100 * CGFloat(self.webView.estimatedProgress);
+
         }
         
         self.ob_title =   self.webView.observe(\.title) { (webview, value) in
             
             debugPrint(value);
+//            self.pageTitle = value;
         }
-        
+        self.webView.addSubview(self.progressBar);
+
         
     }
     
@@ -249,7 +265,8 @@ extension LYUBrowser : WKNavigationDelegate {
     /// (2) 页面开始加载时调用
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true;
-       
+        self.progressBar.isHidden = false;
+        self.progressBar.progressValue = 0;
         
         if(self.delegate != nil && self.delegate!.responds(to:#selector(LYUBrowserDelegate.browserDidStartLoading(_:)))){
             self.delegate!.browserDidStartLoading!(self);
@@ -289,6 +306,8 @@ extension LYUBrowser : WKNavigationDelegate {
         if(self.delegate != nil && self.delegate!.responds(to: #selector(LYUBrowserDelegate.browserDidFinishLoading(_:)))){
             self.delegate?.browserDidFinishLoading!(self);
         }
+        self.progressBar.isHidden = true;
+    
     }
     
     /// //页面加载失败时调用
@@ -297,6 +316,7 @@ extension LYUBrowser : WKNavigationDelegate {
         if(self.delegate != nil && self.delegate!.responds(to: #selector(LYUBrowserDelegate.browserDidFailLoading(_:)))){
             self.delegate?.browserDidFailLoading!(self);
         }
+         self.progressBar.isHidden = true;
     }
     
     // MARK:身份验证
