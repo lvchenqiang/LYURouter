@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.makeKeyAndVisible();
         LYURouter.configRouterFiles(routerFileNames: ["modules.json"]);
         
-        
+        debugPrint(LYUNavigationBar.isIphoneX);
         LYURouter.shareRouter.routeStartAction = {options,url in
             if(url == "ViewController"){
                 options.defaultParams["name"] = "李四"

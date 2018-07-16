@@ -115,11 +115,9 @@ class LYUBrowser: UIView {
        
         self.ob_estimatedProgress =   self.webView.observe(\.estimatedProgress) { (webview, value) in
             self.progressBar.progressValue = 100 * CGFloat(self.webView.estimatedProgress);
-
         }
         
         self.ob_title =   self.webView.observe(\.title) { (webview, value) in
-            
             debugPrint(value);
 //            self.pageTitle = value;
         }

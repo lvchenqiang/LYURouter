@@ -43,6 +43,7 @@ class LYUPopWindow: UIView {
         super.init(frame: frame);
         self.frame = UIScreen.main.bounds;
         self.setupUI();
+ 
     }
     fileprivate func setupUI(){
         self.addSubview(self.shadowView);

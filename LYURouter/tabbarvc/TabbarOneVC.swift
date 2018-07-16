@@ -18,7 +18,7 @@ class TabbarOneVC: UIViewController {
         self.title  = "TabbarOneVC";
          self.view.backgroundColor = UIColor.cyan
         // Do any additional setup after loading the view.
-        popV.showPop()
+//        popV.showPop()
     }
 
     override func didReceiveMemoryWarning() {
